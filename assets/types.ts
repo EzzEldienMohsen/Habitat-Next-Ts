@@ -9,6 +9,14 @@ export type Products = {
   price: number;
   cat: string;
 }[];
+export type Product = {
+  id: number;
+  img: string;
+  name: string;
+  type: string;
+  price: number;
+  cat: string;
+};
 
 // Type for the `clientUser` table
 export type ClientUser = {
