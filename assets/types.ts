@@ -96,3 +96,12 @@ export type BranchAddress = {
   holidays: string;
   admin_id: number;
 };
+
+// HeaderLinks
+export type HeaderLinks = string[];
+// Footer column
+
+export type FooterColumn = {
+  title: string;
+  list: string[];
+};
