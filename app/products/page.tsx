@@ -17,6 +17,7 @@ const Page: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const searchParams = useSearchParams();
+  const router = useRouter(); // Router for updating the URL
   const limit = 16;
 
   // Fetch Products
@@ -39,6 +40,13 @@ const Page: React.FC = () => {
     }
   };
 
+  // Handle category change and reset page to 1
+  const handleTabChange = (category: string) => {
+    setSelectedTab(category);
+    setCurrentPage(1); // Reset the page to 1
+    router.push(`?page=1`); // Update the URL to page 1
+  };
+
   // Update products when URL or tab changes
   React.useEffect(() => {
     const pageParam = searchParams.get('page');
@@ -57,7 +65,7 @@ const Page: React.FC = () => {
         <CategoryTabs
           categories={productsTypes.map((type) => type.toLowerCase())}
           selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
+          setSelectedTab={handleTabChange} // Use the modified handler
         />
       </div>
       <React.Suspense
