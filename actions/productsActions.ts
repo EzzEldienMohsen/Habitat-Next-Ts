@@ -74,10 +74,10 @@ export const getPaginatedProducts = async (
 
 //  get single product by id
 
-export const getProductById = async (id: number): Promise<Product | null> => {
+export const getProductById = async (id: string): Promise<Product> => {
   const query = `SELECT * FROM products WHERE id = @id`;
   const stmt = db.prepare(query);
-  const product = stmt.get({ id }) as Product | undefined;
+  const product = stmt.get({ id }) as Product;
 
-  return product || null;
+  return product;
 };
