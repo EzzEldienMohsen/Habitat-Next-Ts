@@ -114,10 +114,4 @@ export type FooterColumn = {
   list: string[];
 };
 
-// Prev State Messages Type
-export type PrevState = {
-  name?: string;
-  phone?: string;
-  email?: string;
-  message?: string;
-};
+

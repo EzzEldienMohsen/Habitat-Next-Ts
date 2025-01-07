@@ -1,7 +1,9 @@
 'use server';
-import { PrevState, Product, Products } from '@/assets/types';
+import { Product, Products } from '@/assets/types';
 import { messageSchema } from '@/assets/zodValidationSchemas';
 import sql from 'better-sqlite3';
+import { revalidatePath } from 'next/cache';
+
 const db = sql('habitat.db');
 export const getMainProducts = async (
   limit: number = 8,
@@ -86,7 +88,7 @@ export const getProductById = async (id: string): Promise<Product> => {
 //  Saving the contact message functionality
 
 export const sendMessages = async (
-  prevState: PrevState,
+  prevState: { error?: { field: string; message: string }[] },
   formData: FormData
 ): Promise<{ error?: { field: string; message: string }[] }> => {
   const name = formData.get('name')?.toString() || '';
@@ -130,7 +132,7 @@ export const sendMessages = async (
     `);
     stmt.run(name, phone, email, message);
 
-    // If necessary, update the prevState here (not strictly required since we're submitting)
+    revalidatePath('/', 'layout');
     return {};
   } catch (error) {
     console.error('Database Error:', error);
