@@ -21,14 +21,19 @@ export type Product = {
 // Type for the `clientUser` table
 export type ClientUser = {
   id: number;
+  token?: string;
   f_name: string;
   l_name: string;
   email: string;
   phone: string;
-  main_address: string;
+  main_address?: string;
   password: string;
+  gender?: string;
+  date_of_birth?: string; // Use ISO 8601 date string
+  nationality?: string;
+  avatar_url?: string;
+  bio?: string;
 };
-
 // Type for the `cart` table
 export type Cart = {
   id: number;
@@ -113,5 +118,3 @@ export type FooterColumn = {
   title: string;
   list: string[];
 };
-
-

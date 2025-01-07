@@ -22,15 +22,21 @@ db.prepare(
 // CLIENT USER TABLE
 db.prepare(
   `
-  CREATE TABLE IF NOT EXISTS clientUser (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    f_name TEXT NOT NULL,
-    l_name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    phone TEXT NOT NULL,
-    main_address TEXT NOT NULL DEFAULT ' ',
-    password TEXT NOT NULL
-  )
+ CREATE TABLE IF NOT EXISTS clientUser (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT,
+  f_name TEXT NOT NULL,
+  l_name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  phone TEXT NOT NULL,
+  main_address TEXT,
+  password TEXT NOT NULL,
+  gender TEXT,
+  date_of_birth DATE,
+  nationality TEXT,
+  avatar_url TEXT,
+  bio TEXT
+);
 `
 ).run();
 
@@ -88,22 +94,6 @@ db.prepare(
     address_name TEXT NOT NULL,
     address_details TEXT NOT NULL,
     client_id INTEGER NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES clientUser(id) ON DELETE CASCADE
-  )
-`
-).run();
-
-// CLIENT PROFILE TABLE
-db.prepare(
-  `
-  CREATE TABLE IF NOT EXISTS profile (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    client_id INTEGER NOT NULL UNIQUE,
-    gender TEXT NOT NULL DEFAULT 'Not Specified',
-    date_of_birth DATE NOT NULL,
-    nationality TEXT NOT NULL,
-    avatar_url TEXT,
-    bio TEXT,
     FOREIGN KEY (client_id) REFERENCES clientUser(id) ON DELETE CASCADE
   )
 `
