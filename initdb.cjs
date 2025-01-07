@@ -152,6 +152,20 @@ db.prepare(
 `
 ).run();
 
+// MESSAGES TABLE
+
+db.prepare(
+  `
+CREATE TABLE IF NOT EXISTS contact (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL
+)
+`
+).run();
+
 // PRODUCTS INITIAL DATA
 const initData = async () => {
   const stmt = db.prepare(`

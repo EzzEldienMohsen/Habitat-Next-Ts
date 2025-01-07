@@ -1,5 +1,6 @@
 'use server';
-import { Product, Products } from '@/assets/types';
+import { PrevState, Product, Products } from '@/assets/types';
+import { messageSchema } from '@/assets/zodValidationSchemas';
 import sql from 'better-sqlite3';
 const db = sql('habitat.db');
 export const getMainProducts = async (
@@ -80,4 +81,59 @@ export const getProductById = async (id: string): Promise<Product> => {
   const product = stmt.get({ id }) as Product;
 
   return product;
+};
+
+//  Saving the contact message functionality
+
+export const sendMessages = async (
+  prevState: PrevState,
+  formData: FormData
+): Promise<{ error?: { field: string; message: string }[] }> => {
+  const name = formData.get('name')?.toString() || '';
+  const phone = formData.get('phone')?.toString() || '';
+  const email = formData.get('email')?.toString() || '';
+  const message = formData.get('message')?.toString() || '';
+
+  // Validate with Zod Schema
+  const validationResult = messageSchema.safeParse({
+    name,
+    phone,
+    email,
+    message,
+  });
+  if (!validationResult.success) {
+    const errorMap = validationResult.error.format();
+    const errors = Object.entries(errorMap).flatMap(([key, value]) => {
+      if (Array.isArray(value)) {
+        // If it's a string array, map directly
+        return value.map((message) => ({
+          field: key,
+          message,
+        }));
+      } else if (value && '_errors' in value) {
+        // If it's an object with _errors, map those
+        return value._errors.map((message) => ({
+          field: key,
+          message,
+        }));
+      }
+      return []; // No errors for this field
+    });
+    return { error: errors };
+  }
+
+  try {
+    // Store the message in the database
+    const stmt = db.prepare(`
+      INSERT INTO contact (name, phone, email, message)
+      VALUES (?, ?, ?, ?)
+    `);
+    stmt.run(name, phone, email, message);
+
+    // If necessary, update the prevState here (not strictly required since we're submitting)
+    return {};
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Message could not be stored. Please try again later.');
+  }
 };

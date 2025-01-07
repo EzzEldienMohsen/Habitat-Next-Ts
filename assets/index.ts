@@ -3,7 +3,7 @@ import { FooterColumn, HeaderLinks } from './types';
 export const headerLinks: HeaderLinks = [
   'about',
   'products',
-  'contact us',
+  'contact',
   'profile',
 ];
 
