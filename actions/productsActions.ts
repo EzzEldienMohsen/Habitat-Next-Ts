@@ -86,11 +86,13 @@ export const getProductById = async (id: string): Promise<Product> => {
 };
 
 //  Saving the contact message functionality
-
 export const sendMessages = async (
   prevState: { error?: { field: string; message: string }[] },
   formData: FormData
-): Promise<{ error?: { field: string; message: string }[] }> => {
+): Promise<{
+  error?: { field: string; message: string }[];
+  success?: boolean;
+}> => {
   const name = formData.get('name')?.toString() || '';
   const phone = formData.get('phone')?.toString() || '';
   const email = formData.get('email')?.toString() || '';
@@ -103,6 +105,7 @@ export const sendMessages = async (
     email,
     message,
   });
+
   if (!validationResult.success) {
     const errorMap = validationResult.error.format();
     const errors = Object.entries(errorMap).flatMap(([key, value]) => {
@@ -121,7 +124,7 @@ export const sendMessages = async (
       }
       return []; // No errors for this field
     });
-    return { error: errors };
+    return { error: errors, success: false }; // Include success flag
   }
 
   try {
@@ -133,7 +136,7 @@ export const sendMessages = async (
     stmt.run(name, phone, email, message);
 
     revalidatePath('/', 'layout');
-    return {};
+    return { success: true }; // Success flag
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Message could not be stored. Please try again later.');
