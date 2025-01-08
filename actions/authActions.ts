@@ -8,7 +8,6 @@ import {
 } from '@/assets/zodValidationSchemas';
 import { ClientUser } from '@/assets/types';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
 
 const db = sql('habitat.db');
 
@@ -169,7 +168,7 @@ export const verifyAuth = async (token: string | null | undefined) => {
   // Fetch the user from the database
   const user = db
     .prepare(`SELECT * FROM clientUser WHERE id = ?`)
-    .get(decoded.userId);
+    .get(decoded.userId) as ClientUser;
 
   return { user: user || null };
 };
@@ -199,7 +198,6 @@ export const clientLogout = async (
     path: '/',
     maxAge: 0, // Expire immediately
   });
-        revalidatePath('/', 'layout');
 
   return { success: true };
 };

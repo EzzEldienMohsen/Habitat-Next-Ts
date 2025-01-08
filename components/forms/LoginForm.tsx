@@ -18,7 +18,7 @@ const LoginForm: React.FC = () => {
 
   React.useEffect(() => {
     if (state.token) {
-      toast.success('Signed up successfully!');
+      toast.success('Signed in successfully!');
       redirect('/');
     }
   }, [state.token]);

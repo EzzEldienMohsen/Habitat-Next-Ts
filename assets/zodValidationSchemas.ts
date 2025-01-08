@@ -47,3 +47,30 @@ export const ClientLoginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8),
 });
+
+// Client user Schema
+export const ClientUserSchema = z.object({
+  f_name: z.string().min(3, 'First name must be at least 3 characters long'),
+  l_name: z.string().min(3, 'Last name must be at least 3 characters long'),
+  email: z.string().email('Invalid email address'),
+  phone: z
+    .string()
+    .regex(/^01[0-2,5][0-9]{8}$/, 'Invalid Egyptian phone number'),
+  main_address: z
+    .string()
+    .min(10, 'address must be at least 10 characters long'),
+  gender: z.string().optional(),
+  date_of_birth: z.string().optional(),
+  nationality: z.string().optional(),
+  bio: z.string().optional(),
+});
+
+// Address validation schema
+export const ClientAddressSchema = z.object({
+  address_name: z
+    .string()
+    .min(5, 'Address name must be at least 5 characters long'),
+  address_details: z
+    .string()
+    .min(10, 'Address details must be at least 10 characters long'),
+});

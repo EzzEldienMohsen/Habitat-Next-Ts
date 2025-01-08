@@ -11,6 +11,7 @@ const FormElement: React.FC<Props> = ({ name, type, isError, error }) => {
   const customLabels: { [key: string]: string } = {
     f_name: 'first name',
     l_name: 'last name',
+    confirmPassword: 'confirmed password',
   };
   const labelName = customLabels[name] || name;
   return (

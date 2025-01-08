@@ -71,17 +71,6 @@ export type ClientAddress = {
   client_id: number;
 };
 
-// Type for the `profile` table
-export type Profile = {
-  id: number;
-  client_id: number;
-  gender: string;
-  date_of_birth: string; // Use `Date` in your app logic if you're converting this field
-  nationality: string;
-  avatar_url?: string;
-  bio?: string;
-};
-
 // Type for the `adminUser` table
 export type AdminUser = {
   id: number;
