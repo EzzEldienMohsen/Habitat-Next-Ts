@@ -25,7 +25,7 @@ const ContactForm = () => {
       </h1>
       <form
         action={formAction}
-        className="w-4/5 bg-[#f7f5eb] flex flex-col justify-center items-center p-10 gap-y-4"
+        className="w-4/5 bg-[#f7f5eb] flex flex-col justify-center items-center p-10 gap-y-4 rounded-md"
       >
         <FormElement
           name="name"

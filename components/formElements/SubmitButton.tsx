@@ -8,9 +8,13 @@ const SubmitButton = () => {
   return (
     <button
       disabled={status.pending}
-      className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+      className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 flex justify-center items-center"
     >
-      {status.pending ? 'Sending...' : 'Send Message'}
+      {status.pending ? (
+        <span className="loading loading-spinner loading-lg text-blue-300"></span>
+      ) : (
+        'Submit'
+      )}
     </button>
   );
 };

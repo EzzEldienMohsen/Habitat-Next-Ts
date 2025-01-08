@@ -8,13 +8,18 @@ import {
 } from '@/assets/zodValidationSchemas';
 import { ClientUser } from '@/assets/types';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 const db = sql('habitat.db');
 
 // Client Sign Up
 
-export const clientSignup = async (
-  prevState: { error?: { field: string; message: string }[] },
+export const clientSignUp = async (
+  prevState: {
+    error?: { field: string; message: string }[];
+    success?: boolean;
+    token?: string;
+  },
   formData: FormData
 ) => {
   const f_name = formData.get('f_name') as string;
@@ -94,7 +99,7 @@ export const clientSignup = async (
 // Client user Log in
 
 export const clientLogin = async (
-  prevState: { error?: { field: string; message: string }[] },
+  prevState: { error?: { field: string; message: string }[];success?:boolean;token?:string },
   formData: FormData
 ) => {
   const email = formData.get('email') as string;
@@ -174,5 +179,7 @@ export const clientLogout = async () => {
     path: '/',
     maxAge: 0, // Expire immediately
   });
+  revalidatePath('/', 'layout');
+
   return { success: true };
 };

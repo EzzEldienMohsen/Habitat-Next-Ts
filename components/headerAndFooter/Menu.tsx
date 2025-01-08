@@ -51,12 +51,14 @@ const Menu = () => {
           );
         })}
         <div className="w-full flex justify-between items-center text-[#222] text-4xl  mt-3 font-man font-extralight">
-          <LuLogIn />
           <Link href="/cart">
             <MdOutlineShoppingBag />
           </Link>
           <Link href="/wishList">
             <FaHeart />
+          </Link>
+          <Link href={'/sign-up'}>
+            <LuLogIn />
           </Link>
         </div>
       </ul>
