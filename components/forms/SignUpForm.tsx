@@ -15,13 +15,13 @@ const SignUpForm = () => {
     success: false,
     token: undefined,
   });
- 
-React.useEffect(()=>{
+
+  React.useEffect(() => {
     if (state.token) {
       toast.success('Signed up successfully!');
       redirect('/');
     }
-},[state.token])
+  }, [state.token]);
   return (
     <div className="flex flex-col px-4 gap-y-6 justify-center items-center my-4 w-full">
       <h1 className="font-man capitalize text-xl md:text-2xl lg:text-3xl font-light">
@@ -60,22 +60,31 @@ React.useEffect(()=>{
             name="password"
             type="password"
             isError={!!state.error?.find((err) => err.field === 'password')}
-            error={state.error?.find((err) => err.field === 'password')?.message}
+            error={
+              state.error?.find((err) => err.field === 'password')?.message
+            }
           />
           <PasswordElement
             name="confirmPassword"
             type="password"
-            isError={!!state.error?.find((err) => err.field === 'confirmPassword')}
-            error={state.error?.find((err) => err.field === 'confirmPassword')?.message}
+            isError={
+              !!state.error?.find((err) => err.field === 'confirmPassword')
+            }
+            error={
+              state.error?.find((err) => err.field === 'confirmPassword')
+                ?.message
+            }
           />
           <SubmitButton />
         </form>
-        <p className="text-sm md:text-base lg:text-lg text-gray-700 gap-x-3">
-          Already have an account ?
+        <div className="flex gap-x-3 justify-start items-center">
+          <p className="text-sm md:text-base lg:text-lg text-gray-700">
+            Already have an account ?
+          </p>
           <Link href="/login" className="text-blue-500 hover:underline">
             Log in
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
