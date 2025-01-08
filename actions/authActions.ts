@@ -99,7 +99,11 @@ export const clientSignUp = async (
 // Client user Log in
 
 export const clientLogin = async (
-  prevState: { error?: { field: string; message: string }[];success?:boolean;token?:string },
+  prevState: {
+    error?: { field: string; message: string }[];
+    success?: boolean;
+    token?: string;
+  },
   formData: FormData
 ) => {
   const email = formData.get('email') as string;
@@ -156,7 +160,7 @@ export const clientLogin = async (
 
 // Verifying Client Auth
 
-export const verifyAuth = async (token: string | null) => {
+export const verifyAuth = async (token: string | null | undefined) => {
   if (!token) return { user: null };
 
   const decoded = verifyToken(token);
@@ -169,9 +173,25 @@ export const verifyAuth = async (token: string | null) => {
 
   return { user: user || null };
 };
+// Checking Auth
+export const checkAuth = async (): Promise<{ isSignedIn: boolean }> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    return { isSignedIn: false };
+  }
+
+  // Call your `verifyAuth` function
+  const result = await verifyAuth(token);
+  return { isSignedIn: !!result.user };
+};
 
 // Client Log out
-export const clientLogout = async () => {
+export const clientLogout = async (
+  prevState: { success?: boolean },
+  formData: FormData
+) => {
   const theCookies = await cookies();
   theCookies.set('auth_token', '', {
     httpOnly: true,
@@ -179,7 +199,7 @@ export const clientLogout = async () => {
     path: '/',
     maxAge: 0, // Expire immediately
   });
-  revalidatePath('/', 'layout');
+        revalidatePath('/', 'layout');
 
   return { success: true };
 };

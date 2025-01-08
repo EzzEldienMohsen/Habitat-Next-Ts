@@ -30,7 +30,7 @@ const SignUpForm = () => {
       <div className="flex flex-col justify-center items-start w-4/5 bg-[#f7f5eb] p-5 gap-y-4 rounded-md">
         <form
           action={formAction}
-          className="w-full flex flex-col justify-center items-center "
+          className="w-full flex flex-col justify-center items-center gap-y-4 "
         >
           <FormElement
             name="f_name"

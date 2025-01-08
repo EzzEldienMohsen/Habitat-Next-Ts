@@ -7,6 +7,8 @@ import { LuLogIn } from 'react-icons/lu';
 import { MdOutlineShoppingBag } from 'react-icons/md';
 import { FaHeart } from 'react-icons/fa';
 import Menu from './Menu';
+import LogOutComponent from './LogOutComponent';
+
 const Header = () => {
   return (
     <div className="bg-[#f7f5eb] py-2 flex lg:justify-between items-center justify-between px-4 ">
@@ -37,9 +39,7 @@ const Header = () => {
           </span>
           <FaHeart className="w-8 h-8 text-[#222] font-thin mt-1" />
         </Link>
-        <Link href={'/sign-up'}>
-          <LuLogIn className="w-8 mt-1 h-8 text-[#222] font-thin" />
-        </Link>
+        <LogOutComponent style="w-8 mt-1 h-8 text-[#222] font-thin" />
       </div>
       {/* MOBILE MENU */}
       <Menu />

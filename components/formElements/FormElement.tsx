@@ -8,19 +8,24 @@ interface Props {
 }
 
 const FormElement: React.FC<Props> = ({ name, type, isError, error }) => {
+  const customLabels: { [key: string]: string } = {
+    f_name: 'first name',
+    l_name: 'last name',
+  };
+  const labelName = customLabels[name] || name;
   return (
     <div className="flex flex-col justify-center items-start gap-y-2 w-full">
       <label
         htmlFor={name}
         className="capitalize font-man text-lg md:text-xl lg:text-2xl font-semibold"
       >
-        {name}
+        {labelName}
       </label>
       <input
         type={type}
         id={name}
         name={name}
-        placeholder={`Please insert your ${name}`}
+        placeholder={`Please insert your ${labelName}`}
         className={`rounded-md w-full p-2 shadow-md bg-white font-man text-md md:text-xl  border ${
           isError ? 'border-[red]' : 'border-black'
         }`}

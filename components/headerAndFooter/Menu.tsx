@@ -3,6 +3,7 @@ import { MdOutlineShoppingBag } from 'react-icons/md';
 import { FaHeart } from 'react-icons/fa6';
 import { headerLinks } from '@/assets';
 import Link from 'next/link';
+import LogOutComponent from './LogOutComponent';
 
 const Menu = () => {
   return (
@@ -57,9 +58,7 @@ const Menu = () => {
           <Link href="/wishList">
             <FaHeart />
           </Link>
-          <Link href={'/sign-up'}>
-            <LuLogIn />
-          </Link>
+          <LogOutComponent style={''} />
         </div>
       </ul>
     </div>
