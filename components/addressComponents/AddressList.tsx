@@ -30,7 +30,7 @@ const AddressList: React.FC<{ address: ClientAddress[] }> = ({ address }) => {
               <div className="w-full flex flex-col justify-center items-center">
                 <DeleteAddressForm id={ad.id} />
                 <Link
-                  href="edit-address"
+                  href={`/address/${ad.id}`}
                   className="btn bg-blue-500 text-white px-4 py-2 rounded-md mt-4 flex justify-center items-center capitalize"
                 >
                   Edit Address

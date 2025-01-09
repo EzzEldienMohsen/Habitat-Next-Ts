@@ -4,10 +4,17 @@ interface Props {
   name: string;
   type: string;
   isError?: boolean;
+  defaultValue?: string;
   error?: string; // To show error messages
 }
 
-const FormElement: React.FC<Props> = ({ name, type, isError, error }) => {
+const FormElement: React.FC<Props> = ({
+  name,
+  type,
+  isError,
+  error,
+  defaultValue,
+}) => {
   const customLabels: { [key: string]: string } = {
     f_name: 'first name',
     l_name: 'last name',
@@ -28,6 +35,7 @@ const FormElement: React.FC<Props> = ({ name, type, isError, error }) => {
         type={type}
         id={name}
         name={name}
+        defaultValue={defaultValue}
         placeholder={`Please insert your ${labelName}`}
         className={`rounded-md w-full p-2 shadow-md bg-white font-man text-md md:text-xl  border ${
           isError ? 'border-[red]' : 'border-black'

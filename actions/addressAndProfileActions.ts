@@ -74,8 +74,17 @@ export const getAddressById = async (
   address?: ClientAddress;
   error?: { field: string; message: string }[];
 }> => {
-  if (!id)
-    return { error: [{ field: 'id', message: 'Address ID is required' }] };
+  const parsedId = parseInt(id, 10);
+  if (isNaN(parsedId)) {
+    return {
+      error: [
+        {
+          field: 'id',
+          message: 'Address ID is required and must be an integer',
+        },
+      ],
+    };
+  }
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
@@ -90,7 +99,7 @@ export const getAddressById = async (
   const clientId = result.user?.id;
   const address = db
     .prepare(`SELECT * FROM client_address WHERE id = ? AND client_id = ?`)
-    .get(id, clientId) as ClientAddress | undefined;
+    .get(parsedId, clientId) as ClientAddress | undefined;
 
   if (!address)
     return { error: [{ field: 'address', message: 'Address not found' }] };
@@ -158,8 +167,13 @@ export const updateAddress = async (
 
     if (result.changes === 0)
       return { error: [{ field: 'id', message: 'Update failed' }] };
+    const success = result.changes > 0;
 
-    return { success: true };
+    if (success) {
+      revalidatePath('/address');
+    }
+
+    return { success };
   } catch (error) {
     return { error: [{ field: 'general', message: 'Database error' }] };
   }
@@ -178,7 +192,6 @@ export const deleteAddress = async (
   const token = cookieStore.get('auth_token')?.value;
 
   if (!token) {
-    console.log('No auth token found');
     return { success: false };
   }
 
@@ -186,7 +199,6 @@ export const deleteAddress = async (
   const clientId = theResult.user?.id;
 
   if (!clientId) {
-    console.log('Client ID not found');
     return { success: false };
   }
 
@@ -194,11 +206,9 @@ export const deleteAddress = async (
     .prepare(`DELETE FROM client_address WHERE id = ? AND client_id = ?`)
     .run(id, clientId);
 
-  console.log('DB Result:', result);
   const success = result.changes > 0;
 
   if (success) {
-    console.log('Revalidating path...');
     revalidatePath('/address');
   }
 
