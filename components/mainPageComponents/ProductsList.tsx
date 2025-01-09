@@ -11,7 +11,7 @@ interface Props {
 }
 const ProductList: React.FC<Props> = ({ products }) => {
   return (
-    <div className="my-4 px-4 flex flex-col justify-center items-center md:justify-evenly lg:justify-between md:flex md:flex-row md:flex-wrap md:gap-4 lg:gap-x-4 lg:gap-y-8">
+    <div className="my-4 px-4 flex flex-col justify-center items-center md:justify-evenly lg:justify-start md:flex md:flex-row md:flex-wrap md:gap-4 lg:gap-x-4 lg:gap-y-8">
       {products.map((prod) => (
         <AnimatePresence key={prod.id} mode="wait">
           <motion.div
@@ -37,20 +37,20 @@ const ProductList: React.FC<Props> = ({ products }) => {
             <h2 className="text-[#1b1b1b] text-xl my-2 font-man font-light">
               {prod.name}
             </h2>
-            <p className="text-[#1b1b1b] text-lg my-2 font-man font-light">
+            <p className="text-[#1b1b1b] text-md my-2 font-man font-light">
               {prod.type}
             </p>
-            <p className="text-[#1b1b1b] text-lg my-2 font-man font-light">
+            <p className="text-[#1b1b1b] text-md my-2 font-man font-light">
               {prod.price}
             </p>
-            <p className="text-[#1b1b1b] text-lg my-2 font-man font-light">
+            <p className="text-[#1b1b1b] text-md my-2 font-man font-light">
               {prod.cat}
             </p>
             <Link
               href={`/products/${prod.id}`}
               className="btn btn-block my-2 flex justify-center shadow-xl border-[2px] items-center"
             >
-              <p className="text-[#1b1b1b] text-lg font-man font-light">
+              <p className="text-[#1b1b1b] text-md font-man font-light">
                 Go to product
               </p>
             </Link>

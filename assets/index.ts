@@ -65,3 +65,6 @@ export const inst: { id: number; title: string; text: string }[] = [
   },
   { id: 4, title: 'Help', text: 'Email us at service@habitatscapes.com' },
 ];
+// Client links
+
+export const clientLinks:HeaderLinks = ["profile","address","orders"]

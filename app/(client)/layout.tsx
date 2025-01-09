@@ -1,4 +1,5 @@
 import { verifyAuth } from '@/actions/authActions';
+import ClientHeader from '@/components/headerAndFooter/ClientHeader';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -23,5 +24,10 @@ export default async function RootLayout({
     redirect('/'); // Redirect unauthorized users to the homepage
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <ClientHeader />
+      {children}
+    </>
+  );
 }

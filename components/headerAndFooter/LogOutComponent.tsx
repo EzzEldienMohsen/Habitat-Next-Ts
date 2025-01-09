@@ -11,7 +11,7 @@ const LogOutComponent: React.FC<{ style: string }> = async ({ style }) => {
       {isSignedIn ? (
         <LogOutForm style={style} />
       ) : (
-        <Link href={'/sign-up'}>
+        <Link href={'/login'}>
           <LuLogIn className={style} />
         </Link>
       )}

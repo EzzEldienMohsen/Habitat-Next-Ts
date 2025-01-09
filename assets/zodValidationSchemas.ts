@@ -69,7 +69,7 @@ export const ClientUserSchema = z.object({
 export const ClientAddressSchema = z.object({
   address_name: z
     .string()
-    .min(5, 'Address name must be at least 5 characters long'),
+    .min(2, 'Address name must be at least 2 characters long'),
   address_details: z
     .string()
     .min(10, 'Address details must be at least 10 characters long'),

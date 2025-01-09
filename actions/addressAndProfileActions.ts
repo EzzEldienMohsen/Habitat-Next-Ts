@@ -8,7 +8,64 @@ import {
   ClientUserSchema,
 } from '@/assets/zodValidationSchemas';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+
 const db = sql('habitat.db');
+// Create A new Address
+export const createAddress = async (
+  prevState: {
+    error?: { field: string; message: string }[];
+    success?: boolean;
+  },
+  formData: FormData
+) => {
+  const address_name = formData.get('address_name') as string;
+  const address_details = formData.get('address_details') as string;
+
+  const validationResult = ClientAddressSchema.safeParse({
+    address_name,
+    address_details,
+  });
+
+  if (!validationResult.success) {
+    const errorMap = validationResult.error.format();
+    const errors = Object.entries(errorMap).flatMap(([key, value]) => {
+      if (Array.isArray(value)) {
+        // If it's a string array, map directly
+        return value.map((message) => ({
+          field: key,
+          message,
+        }));
+      } else if (value && '_errors' in value) {
+        // If it's an object with _errors, map those
+        return value._errors.map((message) => ({
+          field: key,
+          message,
+        }));
+      }
+      return []; // No errors for this field
+    });
+    return { error: errors, success: false }; // Include success flag
+  }
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    return {
+      error: [{ field: 'general', message: 'User not signed in' }],
+    };
+  }
+
+  // Call your `verifyAuth` function
+  const theResult = await verifyAuth(token);
+  const clientId = theResult.user?.id;
+  const result = db
+    .prepare(
+      ` INSERT INTO client_address (address_name, address_details, client_id) VALUES (?, ?, ?) `
+    )
+    .run(address_name, address_details, clientId);
+  return { success: true };
+};
 
 // get a specific client address
 export const getAddressById = async (
@@ -115,24 +172,37 @@ export const deleteAddress = async (
   formData: FormData
 ) => {
   const id = Number(formData.get('id'));
-
   if (!id) return { success: false };
+
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
   if (!token) {
+    console.log('No auth token found');
     return { success: false };
   }
 
-  // Call your `verifyAuth` function
   const theResult = await verifyAuth(token);
   const clientId = theResult.user?.id;
+
+  if (!clientId) {
+    console.log('Client ID not found');
+    return { success: false };
+  }
 
   const result = db
     .prepare(`DELETE FROM client_address WHERE id = ? AND client_id = ?`)
     .run(id, clientId);
 
-  return { success: result.changes > 0 };
+  console.log('DB Result:', result);
+  const success = result.changes > 0;
+
+  if (success) {
+    console.log('Revalidating path...');
+    revalidatePath('/address');
+  }
+
+  return { success };
 };
 
 //  getting all the addresses
