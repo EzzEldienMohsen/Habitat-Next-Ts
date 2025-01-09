@@ -52,7 +52,7 @@ const SignUpForm = () => {
           />
           <FormElement
             name="phone"
-            type="text"
+            type="tel"
             isError={!!state.error?.find((err) => err.field === 'phone')}
             error={state.error?.find((err) => err.field === 'phone')?.message}
           />

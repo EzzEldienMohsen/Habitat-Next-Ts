@@ -138,7 +138,7 @@ export const clientLogin = async (
 
   if (!user || !verifyPassword(user.password, password)) {
     return {
-      error: [{ field: 'email', message: 'Invalid email or password' }],
+      error: [{ field: 'email', message: 'This Email is Not Registered yet' }],
     };
   }
 

@@ -58,7 +58,7 @@ export const ClientUserSchema = z.object({
     .regex(/^01[0-2,5][0-9]{8}$/, 'Invalid Egyptian phone number'),
   main_address: z
     .string()
-    .min(10, 'address must be at least 10 characters long'),
+    .optional(),
   gender: z.string().optional(),
   date_of_birth: z.string().optional(),
   nationality: z.string().optional(),

@@ -278,6 +278,7 @@ export const updateProfile = async (
     });
     return { error: errors, success: false }; // Include success flag
   }
+
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
@@ -288,35 +289,46 @@ export const updateProfile = async (
   const authResult = await verifyAuth(token);
   const clientId = authResult.user?.id;
 
-  const result = db
-    .prepare(
-      `UPDATE clientUser 
-       SET f_name = ?, l_name = ?, email = ?, phone = ?, 
-           main_address = ?, gender = ?, date_of_birth = ?, 
-           nationality = ?, avatar_url = ?, bio = ? 
-       WHERE id = ?`
-    )
-    .run(
-      data.f_name,
-      data.l_name,
-      data.email,
-      data.phone,
-      data.main_address || null,
-      data.gender || null,
-      data.date_of_birth || null,
-      data.nationality || null,
-      data.avatar_url || null,
-      data.bio || null,
-      clientId
-    );
+  try {
+    const result = db
+      .prepare(
+        `UPDATE clientUser 
+         SET f_name = ?, l_name = ?, email = ?, phone = ?, 
+             main_address = ?, gender = ?, date_of_birth = ?, 
+             nationality = ?, avatar_url = ?, bio = ? 
+         WHERE id = ?`
+      )
+      .run(
+        data.f_name,
+        data.l_name,
+        data.email,
+        data.phone,
+        data.main_address || null,
+        data.gender || null,
+        data.date_of_birth || null,
+        data.nationality || null,
+        data.avatar_url || null,
+        data.bio || null,
+        clientId
+      );
 
-  if (result.changes === 0)
-    return {
-      error: [{ field: 'id', message: 'Update failed' }],
-      success: false,
-    };
+    if (result.changes === 0) {
+      return {
+        error: [{ field: 'id', message: 'Update failed' }],
+        success: false,
+      };
+    }
 
-  return { success: true };
+    const success = result.changes > 0;
+
+    if (success) {
+      revalidatePath('/profile');
+    }
+
+    return { success };
+  } catch (error) {
+    return { error: [{ field: 'general', message: 'Database error' }] };
+  }
 };
 
 // Delete user Profile
@@ -337,5 +349,17 @@ export const deleteProfile = async (
     .prepare(`DELETE FROM clientUser WHERE id = ?`)
     .run(clientId);
 
-  return { success: result.changes > 0 };
+  const success = result.changes > 0;
+
+  if (success) {
+    cookieStore.set('auth_token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 0, // Expire immediately
+    });
+    revalidatePath('/');
+  }
+
+  return { success };
 };
