@@ -8,6 +8,7 @@ import {
 } from '@/assets/zodValidationSchemas';
 import { ClientUser } from '@/assets/types';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 const db = sql('habitat.db');
 
@@ -188,7 +189,7 @@ export const checkAuth = async (): Promise<{ isSignedIn: boolean }> => {
 
 // Client Log out
 export const clientLogout = async (
-  prevState: { success?: boolean },
+  prevState: { success?: string },
   formData: FormData
 ) => {
   const theCookies = await cookies();
@@ -198,6 +199,7 @@ export const clientLogout = async (
     path: '/',
     maxAge: 0, // Expire immediately
   });
+  revalidatePath('/', 'layout');
 
-  return { success: true };
+  return { success: 'logged out successfully' };
 };

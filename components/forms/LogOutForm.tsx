@@ -8,12 +8,12 @@ import { revalidatePath } from 'next/cache';
 
 const LogOutForm: React.FC<{ style: string }> = ({ style }) => {
   const [state, formAction] = React.useActionState(clientLogout, {
-    success: false,
+    success: '',
   });
-  console.log(state.success);
+  console.log(state.success, state);
   React.useEffect(() => {
-    if (state.success) {
-      toast.success('Signed out successfully');
+    if (state?.success.length > 0) {
+      toast.success(state.success);
       revalidatePath('/', 'layout');
 
       redirect('/');
