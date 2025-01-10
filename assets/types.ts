@@ -17,6 +17,15 @@ export type Product = {
   price: number;
   cat: string;
 };
+export type ProductToAddToCart = {
+  id: number;
+  img: string;
+  name: string;
+  type: string;
+  price: number;
+  cat: string;
+  amount: number;
+};
 
 // Type for the `clientUser` table
 export type ClientUser = {
@@ -106,4 +115,14 @@ export type HeaderLinks = string[];
 export type FooterColumn = {
   title: string;
   list: string[];
+};
+// GET ALL CART RETURN TYPE
+export type GetCartData = {
+  items: CartProduct[];
+  totalPrice: number;
+  totalItems: number;
+  taxes: number;
+  cartId:number;
+  subTotal: number;
+  error?: { field: string; message: string }[];
 };

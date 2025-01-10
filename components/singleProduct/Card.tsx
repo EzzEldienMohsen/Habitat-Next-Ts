@@ -1,18 +1,40 @@
 'use client';
 
+import { addToCart } from '@/actions/CartActions';
 import { Product } from '@/assets/types';
 import AmountGeneration from '@/utils/AmountGeneration';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
-
+import { toast } from 'react-toastify';
+import {revalidatePath} from "next/cache"
 interface Props {
   data: Product;
 }
 
 const Card: React.FC<Props> = ({ data }) => {
   const [amount, setAmount] = React.useState<number>(1);
+
+  // Handle amount selection
   const handleAmount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAmount(parseInt(e.target.value));
+    setAmount(parseInt(e.target.value, 10));
+  };
+
+  // Handle adding item to cart
+  const handleAddToCart = async () => {
+    const cartItem = { ...data, amount };
+    try {
+      const result = await addToCart(cartItem);
+      if (result.success) {
+        toast.success('Item added to cart successfully');
+        revalidatePath("/","layout")
+      } else {
+        console.error('Failed to add item to cart:', result.error);
+        toast.error('Failed to add item to cart');
+      }
+    } catch (error) {
+      console.error('Error while adding item to cart:', error);
+      toast.error('Error while adding item to cart');
+    }
   };
 
   return (
@@ -50,13 +72,16 @@ const Card: React.FC<Props> = ({ data }) => {
           aria-label="Select Amount"
           id="amount"
           name="amount"
-          className="select  select-md select-bordered mb-4 font-man"
+          className="select select-md select-bordered mb-4 font-man"
           value={amount}
           onChange={handleAmount}
         >
           <AmountGeneration count={10} />
         </select>
-        <button className="btn bg-[#f7f5eb] text-[#1b1b1b] mb-4 font-man btn-block">
+        <button
+          className="btn bg-[#f7f5eb] text-[#1b1b1b] mb-4 font-man btn-block"
+          onClick={handleAddToCart}
+        >
           Add to bag
         </button>
       </div>

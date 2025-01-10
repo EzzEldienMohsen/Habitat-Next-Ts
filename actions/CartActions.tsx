@@ -2,18 +2,27 @@
 import sql from 'better-sqlite3';
 import { cookies } from 'next/headers';
 import { verifyAuth } from './authActions';
-import { Cart, CartProduct } from '@/assets/types';
+import {
+  Cart,
+  CartProduct,
+  GetCartData,
+  ProductToAddToCart,
+} from '@/assets/types';
 const db = sql('habitat.db');
 
-// Get the Cart
-export const getAllCartItems = async () => {
+// Get All Cart
+export const getAllCartItems = async (): Promise<GetCartData> => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
   if (!token) {
     return {
       items: [],
-      total: 0,
+      totalPrice: 0,
+      totalItems: 0,
+      cartId: 0,
+      taxes: 0,
+      subTotal: 0,
       error: [{ field: 'general', message: 'User not signed in' }],
     };
   }
@@ -26,27 +35,41 @@ export const getAllCartItems = async () => {
     .get(clientId) as Cart;
 
   if (!cart) {
-    return { items: [], total: 0 };
+    return {
+      items: [],
+      totalPrice: 0,
+      totalItems: 0,
+      taxes: 0,
+      cartId: 0,
+      subTotal: 0,
+    };
   }
 
   const cartItems = db
-    .prepare(`SELECT * FROM cart_products WHERE cart_id = ? And `)
+    .prepare(`SELECT * FROM cart_products WHERE cart_id = ?`)
     .all(cart.id) as CartProduct[];
+
   const subTotal = cartItems.reduce(
     (total, item) => total + item.price * item.amount,
     0
   );
+
   const taxes = subTotal * cart.taxes;
   const totalPrice = subTotal + taxes;
+  const totalItems = cartItems.reduce((count, item) => count + item.amount, 0);
 
-  return { items: cartItems, total: totalPrice };
+  return {
+    items: cartItems,
+    totalPrice,
+    totalItems,
+    taxes,
+    subTotal,
+    cartId: cart.id,
+  };
 };
 
 // Add ITem to cart
-export const addToCart = async (
-  prevState: { success?: boolean },
-  cartData: CartProduct
-) => {
+export const addToCart = async (cartData: ProductToAddToCart) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
@@ -199,6 +222,30 @@ export const removeFromCart = async (productId: number) => {
   db.prepare(
     `UPDATE cart SET sub_total = ?, total_price = ?, taxes = ? WHERE id = ?`
   ).run(subTotal, totalPrice, taxes, cart.id);
+
+  return { success: true };
+};
+
+//  clear the cart
+
+export const clearCart = async (cartId: number) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    return {
+      success: false,
+      error: [{ field: 'general', message: 'User not signed in' }],
+    };
+  }
+
+  const authResult = await verifyAuth(token);
+  const clientId = authResult.user?.id;
+
+  db.prepare(`DELETE FROM cart WHERE client_id = ? AND id = ?`).run(
+    clientId,
+    cartId
+  );
 
   return { success: true };
 };
