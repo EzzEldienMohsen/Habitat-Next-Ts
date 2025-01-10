@@ -19,9 +19,8 @@ const UpdateProfileForm: React.FC<{ profile: ClientUser | undefined }> = ({
   React.useEffect(() => {
     if (state.success) {
       toast.success('Edited the profile successfully!');
-             window.location.reload();
-
-    } 
+      window.location.reload();
+    }
   }, [state.success]);
 
   return (
