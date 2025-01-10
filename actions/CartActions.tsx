@@ -10,7 +10,6 @@ import {
 } from '@/assets/types';
 const db = sql('habitat.db');
 
-// Get All Cart
 export const getAllCartItems = async (): Promise<GetCartData> => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
@@ -54,9 +53,16 @@ export const getAllCartItems = async (): Promise<GetCartData> => {
     0
   );
 
+  console.log('Subtotal:', subTotal);
+  console.log('Retrieved cart:', cart);
+  console.log('Tax rate:', cart.taxes);
+
   const taxes = subTotal * cart.taxes;
   const totalPrice = subTotal + taxes;
   const totalItems = cartItems.reduce((count, item) => count + item.amount, 0);
+
+  console.log('Calculated Taxes:', taxes);
+  console.log('Total Price:', totalPrice);
 
   return {
     items: cartItems,
@@ -118,9 +124,11 @@ export const addToCart = async (cartData: ProductToAddToCart) => {
   const taxes = subTotal * cart.taxes;
   const totalPrice = subTotal + taxes;
 
-  db.prepare(
-    `UPDATE cart SET sub_total = ?, total_price = ?, taxes = ? WHERE id = ?`
-  ).run(subTotal, totalPrice, taxes, cart.id);
+  db.prepare(`UPDATE cart SET sub_total = ?, total_price = ? WHERE id = ?`).run(
+    subTotal,
+    totalPrice,
+    cart.id
+  );
 
   return { success: true };
 };
@@ -171,9 +179,11 @@ export const updateCartItem = async (productId: number, newAmount: number) => {
   const taxes = subTotal * cart.taxes;
   const totalPrice = subTotal + taxes;
 
-  db.prepare(
-    `UPDATE cart SET sub_total = ?, total_price = ?, taxes = ? WHERE id = ?`
-  ).run(subTotal, totalPrice, taxes, cart.id);
+  db.prepare(`UPDATE cart SET sub_total = ?, total_price = ? WHERE id = ?`).run(
+    subTotal,
+    totalPrice,
+    cart.id
+  );
 
   return { success: true };
 };
@@ -219,9 +229,11 @@ export const removeFromCart = async (productId: number) => {
   const taxes = subTotal * cart.taxes;
   const totalPrice = subTotal + taxes;
 
-  db.prepare(
-    `UPDATE cart SET sub_total = ?, total_price = ?, taxes = ? WHERE id = ?`
-  ).run(subTotal, totalPrice, taxes, cart.id);
+  db.prepare(`UPDATE cart SET sub_total = ?, total_price = ? WHERE id = ?`).run(
+    subTotal,
+    totalPrice,
+    cart.id
+  );
 
   return { success: true };
 };

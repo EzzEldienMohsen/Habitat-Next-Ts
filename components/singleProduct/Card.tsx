@@ -6,7 +6,6 @@ import AmountGeneration from '@/utils/AmountGeneration';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import {revalidatePath} from "next/cache"
 interface Props {
   data: Product;
 }
@@ -26,7 +25,6 @@ const Card: React.FC<Props> = ({ data }) => {
       const result = await addToCart(cartItem);
       if (result.success) {
         toast.success('Item added to cart successfully');
-        revalidatePath("/","layout")
       } else {
         console.error('Failed to add item to cart:', result.error);
         toast.error('Failed to add item to cart');

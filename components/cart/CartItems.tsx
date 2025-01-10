@@ -1,7 +1,6 @@
 'use client';
 import { removeFromCart } from '@/actions/CartActions';
 import { CartProduct } from '@/assets/types';
-import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
@@ -12,14 +11,15 @@ const CartItems: React.FC<{ items: CartProduct[] }> = ({ items }) => {
     const result = await removeFromCart(id);
     if (result.success) {
       toast.success('product removed successfully from your cart');
-      revalidatePath('/', 'layout');
+      window.location.reload();
     }
   };
   return (
-    <div className="my-4 px-4 flex flex-col justify-center items-center md:justify-evenly lg:items-start lg:justify-evenly md:flex md:flex-row md:flex-wrap md:gap-4  lg:gap-10 ">
+    <div className="my-4 px-4 flex flex-col justify-center items-center md:justify-evenly lg:justify-start md:flex md:flex-row md:flex-wrap md:gap-4 lg:gap-x-4 lg:gap-y-8">
       {items.map((prod) => {
         return (
-          <div className="relative w-80 lg:w-72 px-4 shadow-lg bg-[#f7f5eb] rounded-t-md flex flex-col my-4 md:my-0 justify-start items-start ">
+          <div key={prod.id} className="relative w-80 lg:w-[23vw] px-4 shadow-lg bg-[#f7f5eb] rounded-t-md flex flex-col my-4 md:my-0 justify-start items-start"
+>
             <div
               className={`absolute btn-ghost bg-transparent top-0 right-0 btn btn-circle  text-3xl`}
             >
@@ -79,7 +79,7 @@ const CartItems: React.FC<{ items: CartProduct[] }> = ({ items }) => {
             </div>
             <button
               onClick={() => {
-                prod.id;
+                handleRemoveItem(prod.id);
               }}
               className="btn bg-[#f7f5eb] text-[#1b1b1b] mb-2 mt-1 font-man btn-block"
             >

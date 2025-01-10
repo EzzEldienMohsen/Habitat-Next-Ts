@@ -1,5 +1,6 @@
 "use client"
 import { clearCart } from '@/actions/CartActions';
+import { formatPrice } from '@/utils';
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -13,6 +14,7 @@ const CartTotals: React.FC<{
         const result = await clearCart(cartId)
         if(result.success){
             toast.success("cart cleared successfully")
+            window.location.reload();
         }
     }
   return (
@@ -20,20 +22,22 @@ const CartTotals: React.FC<{
       {/* SUB TOTAL */}
       <p className="border-b border-base-300 pb-2 flex justify-between font-man font-light text-sm lg:text-base">
         <span>Subtotal</span>
-        <span>{subTotal}</span>
+        <span>{formatPrice(subTotal)}</span>
       </p>
 
       {/* TAX */}
       <p className="border-b border-base-300 pb-2 flex justify-between text-sm lg:text-base">
         <span>Tax</span>
-        <span className="font-medium">{taxes}</span>
+        <span className="font-medium">{formatPrice(taxes)}</span>
       </p>
       {/* ORDER TOTAL */}
       <p className="mt-4 pb-2 flex justify-between text-lg lg:text-xl">
         <span>Order Total</span>
-        <span className="font-medium">{totalPrice}</span>
+        <span className="font-medium">{formatPrice(totalPrice)}</span>
       </p>
-      <button className=" btn btn-block my-2 flex justify-center shadow-xl border-[2px] items-center">
+      <button
+      onClick={handleClearCart}
+      className=" btn btn-block my-2 flex justify-center shadow-xl border-[2px] items-center">
         Clear Cart
       </button>
     </div>

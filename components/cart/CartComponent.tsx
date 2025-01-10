@@ -31,14 +31,8 @@ const CartComponent: React.FC = () => {
     <div className="w-full flex justify-center items-center my-8">
       <span className="loading loading-spinner loading-lg text-[darkblue]"></span>
     </div>
-  ) : data.totalItems === 0 ? (
-    <div className="px-4 flex justify-center items-center h-96">
-      <h1 className="text-xl md:text-2xl lg:text-5xl font-man font-light">
-        Please Add Items To Cart
-      </h1>
-    </div>
-  ) : (
-    <>
+  ) : data.totalItems > 0 ? (
+   <>
       <CartItems items={data.items} />
       <CartTotals
         taxes={data.taxes}
@@ -47,6 +41,13 @@ const CartComponent: React.FC = () => {
         cartId={data.cartId}
       />
     </>
+  ) : (
+    
+     <div className="px-4 flex justify-center items-center h-96">
+      <h1 className="text-xl md:text-2xl lg:text-5xl font-man font-light">
+        Please Add Items To Cart
+      </h1>
+    </div>
   );
 };
 
