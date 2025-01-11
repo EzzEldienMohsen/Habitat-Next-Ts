@@ -67,4 +67,4 @@ export const inst: { id: number; title: string; text: string }[] = [
 ];
 // Client links
 
-export const clientLinks:HeaderLinks = ["profile","address","orders"]
+export const clientLinks:HeaderLinks = ["profile","address"]

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import HandleWishList from '../wishlist/HandleWishList';
 
 const CartItems: React.FC<{ items: CartProduct[] }> = ({ items }) => {
   const handleRemoveItem = async (id: number) => {
@@ -18,13 +19,12 @@ const CartItems: React.FC<{ items: CartProduct[] }> = ({ items }) => {
     <div className="my-4 px-4 flex flex-col justify-center items-center md:justify-evenly lg:justify-start md:flex md:flex-row md:flex-wrap md:gap-4 lg:gap-x-4 lg:gap-y-8">
       {items.map((prod) => {
         return (
-          <div key={prod.id} className="relative w-80 lg:w-[23vw] px-4 shadow-lg bg-[#f7f5eb] rounded-t-md flex flex-col my-4 md:my-0 justify-start items-start"
->
-            <div
-              className={`absolute btn-ghost bg-transparent top-0 right-0 btn btn-circle  text-3xl`}
-            >
-              <FaHeart />
-            </div>
+          <div
+            key={prod.id}
+            className="relative w-80 lg:w-[23vw] px-4 shadow-lg bg-[#f7f5eb] rounded-t-md flex flex-col my-4 md:my-0 justify-start items-start"
+          >
+            <HandleWishList data={prod} />
+
             <img src={prod.img} alt={prod.cat} className=" rounded-t-md" />
             <Link
               href={`/products/${prod.product_id}`}
@@ -34,7 +34,7 @@ const CartItems: React.FC<{ items: CartProduct[] }> = ({ items }) => {
                 <p className="text-[#1b1b1b] text-lg font-man font-light">
                   Name
                 </p>
-                <p className="text-[#1b1b1b] text-lg font-man font-light">
+                <p className="text-[#1b1b1b] text-md font-man font-light">
                   {prod.name}
                 </p>
               </div>

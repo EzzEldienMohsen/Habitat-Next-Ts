@@ -5,6 +5,7 @@ import { FaHeart } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Products } from '@/assets/types';
+import HandleWishList from '../wishlist/HandleWishList';
 
 interface Props {
   products: Products;
@@ -21,11 +22,7 @@ const ProductList: React.FC<Props> = ({ products }) => {
             transition={{ duration: 0.5 }}
             className="relative w-80 lg:w-[23vw] px-4 shadow-lg bg-[#f7f5eb] rounded-t-md flex flex-col my-4 md:my-0 justify-start items-start"
           >
-            <div
-              className={`absolute btn-ghost bg-transparent top-0 right-0 btn btn-circle text-3xl z-[10]`}
-            >
-              <FaHeart />
-            </div>
+            <HandleWishList data={prod} />
             <div className="relative w-full h-40">
               <Image
                 src={prod.img}

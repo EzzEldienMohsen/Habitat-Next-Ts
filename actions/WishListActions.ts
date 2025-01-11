@@ -3,11 +3,13 @@ import sql from 'better-sqlite3';
 import { cookies } from 'next/headers';
 import { verifyAuth } from './authActions';
 import {
+  CartProduct,
   GetWishlistData,
   Product,
   Wishlist,
   WishlistItem,
 } from '@/assets/types';
+import { revalidatePath } from 'next/cache';
 
 const db = sql('habitat.db');
 
@@ -42,9 +44,8 @@ export const getAllWishlistItems = async (): Promise<GetWishlistData> => {
   return { items: wishlistItems, totalItems: wishlistItems.length };
 };
 
-// Add To WishList
-
-export const addToWishlist = async (wishlistData: Product) => {
+//  Add Item to the wishList
+export const addToWishlist = async (wishlistData: Product | CartProduct) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
@@ -67,6 +68,9 @@ export const addToWishlist = async (wishlistData: Product) => {
       .get(clientId) as Wishlist;
   }
 
+  const productId =
+    'product_id' in wishlistData ? wishlistData.product_id : wishlistData.id;
+
   db.prepare(
     `
     INSERT INTO wishlist_items (img, name, type, price, cat, wishlist_id, product_id)
@@ -79,8 +83,10 @@ export const addToWishlist = async (wishlistData: Product) => {
     wishlistData.price,
     wishlistData.cat,
     wishlist.id,
-    wishlistData.id
+    productId
   );
+
+revalidatePath("/","layout")
 
   return { success: true };
 };
@@ -117,12 +123,14 @@ export const removeFromWishlist = async (wishId: number) => {
     wishlist.id
   );
 
+revalidatePath("/","layout")
+
   return { success: true };
 };
 
 // Clear all the wish List
 
-export const clearWishlist = async (wishlistId: number) => {
+export const clearWishlist = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
@@ -136,10 +144,9 @@ export const clearWishlist = async (wishlistId: number) => {
   const authResult = await verifyAuth(token);
   const clientId = authResult.user?.id;
 
-  db.prepare(`DELETE FROM wishlist WHERE client_id = ? AND id = ?`).run(
-    clientId,
-    wishlistId
-  );
+  db.prepare(`DELETE FROM wishlist WHERE client_id = ?`).run(clientId);
+
+revalidatePath("/","layout")
 
   return { success: true };
 };

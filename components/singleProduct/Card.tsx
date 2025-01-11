@@ -6,6 +6,7 @@ import AmountGeneration from '@/utils/AmountGeneration';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import HandleWishList from '../wishlist/HandleWishList';
 interface Props {
   data: Product;
 }
@@ -37,15 +38,11 @@ const Card: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="flex px-4 flex-col md:justify-between md:gap-10 lg:gap-20 md:flex-row-reverse relative">
-      <div
-        className={`absolute btn-ghost bg-transparent top-0 right-4 border-0 btn btn-circle text-3xl`}
-      >
-        <FaHeart />
-      </div>
+      <HandleWishList data={data} />
       <img
         src={data.img}
         alt={data.name}
-        className="mb-4 md:mb-0 lg:w-10/12 rounded-t-xl"
+        className="mb-4 md:mb-0 lg:w-full rounded-t-xl"
       />
       <div className="flex flex-col md:w-2/5 lg:w-auto">
         <h1 className="text-xl md:text-2xl lg:text-4xl mb-4 font-man font-semibold text-[#1b1b1b]">

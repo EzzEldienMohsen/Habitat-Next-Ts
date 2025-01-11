@@ -3,12 +3,10 @@ import React from 'react';
 import logo from '@/app/icon.svg';
 import Image from 'next/image';
 import { headerLinks } from '@/assets';
-import { LuLogIn } from 'react-icons/lu';
-import { MdOutlineShoppingBag } from 'react-icons/md';
-import { FaHeart } from 'react-icons/fa';
 import Menu from './Menu';
 import LogOutComponent from './LogOutComponent';
 import CartButton from './CartButton';
+import WishListButton from './WishListButton';
 
 const Header = () => {
   return (
@@ -29,12 +27,7 @@ const Header = () => {
       {/* Icons */}
       <div className="hidden lg:flex justify-between items-center text-[#222] text-2xl gap-6 font-man font-extralight">
         <CartButton />
-        <Link href="/wishList" className="relative">
-          <span className="absolute top-0 w-6 h-6 flex justify-center items-center -right-1 btn-circle bg-[#747bff] text-black font-man font-light text-xs">
-            <span>{0}</span>
-          </span>
-          <FaHeart className="w-8 h-8 text-[#222] font-thin mt-1" />
-        </Link>
+        <WishListButton />
         <LogOutComponent style="w-8 mt-1 h-8 text-[#222] font-thin" />
       </div>
       {/* MOBILE MENU */}
