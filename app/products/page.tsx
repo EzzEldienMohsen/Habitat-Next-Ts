@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Products as TheProductsType } from '@/assets/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getPaginatedProducts } from '@/actions/productsActions';
@@ -9,7 +9,7 @@ import { productsTypes } from '@/assets';
 import ProductList from '@/components/mainPageComponents/ProductsList';
 import Pagination from '@/components/products/Pagination';
 
-const Page: React.FC = () => {
+const ProductsPageContent: React.FC = () => {
   const [selectedTab, setSelectedTab] = React.useState<string>('all');
   const [products, setProducts] = React.useState<TheProductsType>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -68,25 +68,31 @@ const Page: React.FC = () => {
           setSelectedTab={handleTabChange} // Use the modified handler
         />
       </div>
-      <React.Suspense
-        fallback={
+      {loading ? (
+        <div className="w-full flex justify-center items-center my-8">
           <span className="loading loading-spinner loading-lg text-[darkblue]"></span>
-        }
-      >
-        {loading ? (
-          <div className="w-full flex justify-center items-center my-8">
-            <span className="loading loading-spinner loading-lg text-[darkblue]"></span>
-          </div>
-        ) : products.length > 0 ? (
-          <>
-            <ProductList products={products} />
-            <Pagination currentPage={currentPage} totalPages={totalPages} />
-          </>
-        ) : (
-          <p className="text-center">No products found for this category.</p>
-        )}
-      </React.Suspense>
+        </div>
+      ) : products.length > 0 ? (
+        <>
+          <ProductList products={products} />
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
+        </>
+      ) : (
+        <p className="text-center">No products found for this category.</p>
+      )}
     </>
+  );
+};
+
+const Page: React.FC = () => {
+  return (
+    <Suspense
+      fallback={
+        <span className="loading loading-spinner loading-lg text-[darkblue]"></span>
+      }
+    >
+      <ProductsPageContent />
+    </Suspense>
   );
 };
 
