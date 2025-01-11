@@ -8,13 +8,15 @@ import React from 'react';
 
 const page: React.FC<{ params: { id: string } }> = async ({ params }) => {
   const { id } = await params;
-   if(!id){
-    
-  }else{
-  const data = await getProductById(id);
+  let data;
+  if (!id) {
+  } else {
+    data = await getProductById(id);
+  }
   if (!data) {
     return <div>there is product with these number</div>;
   }
+
   return (
     <div className="flex flex-col my-8">
       {/* CARD */}
@@ -32,4 +34,3 @@ const page: React.FC<{ params: { id: string } }> = async ({ params }) => {
 };
 
 export default page;
-
