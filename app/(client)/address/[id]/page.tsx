@@ -1,6 +1,6 @@
 import EditAddressComponent from '@/components/addressComponents/EditAddressComponent';
 import Separator from '@/components/mainPageComponents/Separator';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+// import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import React from 'react';
 
 interface PageProps {
