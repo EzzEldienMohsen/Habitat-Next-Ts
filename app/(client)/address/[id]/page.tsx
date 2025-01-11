@@ -3,9 +3,11 @@ import EditAddressComponent from '@/components/addressComponents/EditAddressComp
 import Separator from '@/components/mainPageComponents/Separator';
 
 const Page: React.FC<{ params: { id: string } }> = async ({ params }) => {
-  const { id } = await params;
-  if(!id){
-
+  let id;
+  try {
+    id = await params.id;
+  } catch (error) {
+    console.log(error);
   }
   return (
     <>

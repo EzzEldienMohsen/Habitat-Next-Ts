@@ -69,11 +69,21 @@ export const createAddress = async (
 
 // get a specific client address
 export const getAddressById = async (
-  id: string
+  id?: string
 ): Promise<{
   address?: ClientAddress;
   error?: { field: string; message: string }[];
 }> => {
+  if (!id) {
+    return {
+      error: [
+        {
+          field: 'id',
+          message: 'Address ID is required and must be an integer',
+        },
+      ],
+    };
+  }
   const parsedId = parseInt(id, 10);
   if (isNaN(parsedId)) {
     return {

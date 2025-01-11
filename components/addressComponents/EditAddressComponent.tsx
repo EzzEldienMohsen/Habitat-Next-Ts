@@ -5,7 +5,7 @@ import { ClientAddress } from '@/assets/types';
 import React from 'react';
 import EditAddressForm from '../forms/EditAddressForm';
 
-const EditAddressComponent: React.FC<{ id: string | undefined }> = ({ id }) => {
+const EditAddressComponent: React.FC<{ id?: string }> = ({ id }) => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [address, setAddress] = React.useState<ClientAddress>();
   React.useEffect(() => {
