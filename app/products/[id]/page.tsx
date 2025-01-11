@@ -4,17 +4,34 @@ import SpecialProducts from '@/components/mainPageComponents/SpecialProducts';
 import Card from '@/components/singleProduct/Card';
 import CareSingle from '@/components/singleProduct/CareSingle';
 import TheSingleContent from '@/components/singleProduct/TheSingleContent';
+import { Params } from 'next/dist/server/request/params';
 import React from 'react';
 
-const page: React.FC<{ params: { id: string } }> = async ({ params }) => {
+const page: React.FC<{ params: Params }> = async ({ params }) => {
   const { id } = await params;
   let data;
   if (!id) {
+    return (
+      <div className="w-full flex justify-center items-center my-8">
+        {' '}
+        <span className="text-red-500">
+          Error: No product ID found in params
+        </span>{' '}
+      </div>
+    );
   } else {
-    data = await getProductById(id);
+    const productId = Array.isArray(id) ? id[0] : id;
+    data = await getProductById(productId);
   }
   if (!data) {
-    return <div>there is product with these number</div>;
+    return (
+      <div className="w-full flex justify-center items-center my-8">
+        {' '}
+        <span className="text-red-500">
+          Error: No product found with the given ID
+        </span>{' '}
+      </div>
+    );
   }
 
   return (
