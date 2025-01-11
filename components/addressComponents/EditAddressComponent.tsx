@@ -5,7 +5,7 @@ import { ClientAddress } from '@/assets/types';
 import React from 'react';
 import EditAddressForm from '../forms/EditAddressForm';
 
-const EditAddressComponent: React.FC<{ id: string }> = ({ id }) => {
+const EditAddressComponent: React.FC<{ id: string | undefined }> = ({ id }) => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [address, setAddress] = React.useState<ClientAddress>();
   React.useEffect(() => {
@@ -17,7 +17,7 @@ const EditAddressComponent: React.FC<{ id: string }> = ({ id }) => {
           setLoading(false);
         }
       } catch (error) {
-                console.log(error);
+        console.log(error);
 
         throw new Error('could not get data from db');
       }
