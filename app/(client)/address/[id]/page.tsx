@@ -10,7 +10,6 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = async ({ params }) => {
   const { id } = await params;
-  console.log(params, id, typeof id, typeof params);
   return (
     <>
       <EditAddressComponent id={id} />
