@@ -19,10 +19,14 @@ const HandleWishList: React.FC<{ data: Product }> = ({ data }) => {
       setLoading(true);
       try {
         const wishList = await getAllWishlistItems();
-        const desiredItem = wishList.items.find((i) => i.product_id === data.id);
+        const desiredItem = wishList.items.find(
+          (i) => i.product_id === data.id
+        );
         setIsAdded(!!desiredItem);
       } catch (error) {
-        toast.error("Failed to load wishlist items");
+        console.log(error);
+
+        toast.error('Failed to load wishlist items');
       } finally {
         setLoading(false);
       }
@@ -54,7 +58,9 @@ const HandleWishList: React.FC<{ data: Product }> = ({ data }) => {
         }
       }
     } catch (error) {
-      toast.error("Failed to update wishlist");
+      console.log(error);
+
+      toast.error('Failed to update wishlist');
     } finally {
       setLoading(false);
     }

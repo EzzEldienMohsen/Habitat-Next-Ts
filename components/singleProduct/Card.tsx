@@ -4,7 +4,6 @@ import { addToCart } from '@/actions/CartActions';
 import { Product } from '@/assets/types';
 import AmountGeneration from '@/utils/AmountGeneration';
 import React from 'react';
-import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import HandleWishList from '../wishlist/HandleWishList';
 interface Props {

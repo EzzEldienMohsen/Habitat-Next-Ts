@@ -17,6 +17,8 @@ const EditAddressComponent: React.FC<{ id: string }> = ({ id }) => {
           setLoading(false);
         }
       } catch (error) {
+                console.log(error);
+
         throw new Error('could not get data from db');
       }
     };

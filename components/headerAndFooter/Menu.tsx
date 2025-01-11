@@ -1,4 +1,3 @@
-import { LuLogIn } from 'react-icons/lu';
 import { MdOutlineShoppingBag } from 'react-icons/md';
 import { FaHeart } from 'react-icons/fa6';
 import { headerLinks } from '@/assets';

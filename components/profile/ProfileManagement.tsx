@@ -21,6 +21,8 @@ const ProfileManagement: React.FC = () => {
              setLoading(false);
            }
          } catch (error) {
+                  console.log(error)
+
            toast.error('could not get data from db'); // Display error toast
          }
        };

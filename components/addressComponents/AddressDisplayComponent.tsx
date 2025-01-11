@@ -15,6 +15,7 @@ const AddressDisplayComponent = () => {
         setAddress(data);
         setLoading(false);
       } catch (error) {
+        console.log(error);
         throw new Error('could not get data from db');
       }
     };

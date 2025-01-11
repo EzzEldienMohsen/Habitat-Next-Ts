@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FaHeart } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Products } from '@/assets/types';

@@ -3,7 +3,6 @@ import { removeFromCart } from '@/actions/CartActions';
 import { CartProduct } from '@/assets/types';
 import Link from 'next/link';
 import React from 'react';
-import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import HandleWishList from '../wishlist/HandleWishList';
 
