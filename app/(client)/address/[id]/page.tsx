@@ -8,7 +8,7 @@ interface PageProps {
   };
 }
 
-const Page: React.FC<PageProps> = ({ params }) => {
+const Page: React.FC<PageProps> = async ({ params }) => {
   const { id } = params;
 
   return (
