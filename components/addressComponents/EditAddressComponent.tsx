@@ -5,33 +5,23 @@ import { ClientAddress } from '@/assets/types';
 import React from 'react';
 import EditAddressForm from '../forms/EditAddressForm';
 
-interface EditAddressComponentProps {
-  id?: string | string[];
-}
-
-const EditAddressComponent: React.FC<EditAddressComponentProps> = ({ id }) => {
+const EditAddressComponent: React.FC<{ id?: string }> = ({ id }) => {
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [address, setAddress] = React.useState<ClientAddress | undefined>();
-
+  const [address, setAddress] = React.useState<ClientAddress>();
   React.useEffect(() => {
     const getAddresses = async () => {
       try {
-        const addressId = Array.isArray(id) ? id[0] : id;
-
-        if (addressId) {
-          const data = await getAddressById(addressId);
-          if (data.address) {
-            setAddress(data.address);
-          }
+        const data = await getAddressById(id);
+        if (data.address) {
+          setAddress(data.address);
+          setLoading(false);
         }
       } catch (error) {
-        console.error('Error fetching address:', error);
-        throw new Error('Could not get data from database');
-      } finally {
-        setLoading(false);
+        console.log(error);
+
+        throw new Error('could not get data from db');
       }
     };
-
     getAddresses();
   }, [id]);
 

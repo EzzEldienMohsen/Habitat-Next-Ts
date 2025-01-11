@@ -1,15 +1,11 @@
 import React from 'react';
 import EditAddressComponent from '@/components/addressComponents/EditAddressComponent';
 import Separator from '@/components/mainPageComponents/Separator';
-import { Params } from 'next/dist/server/request/params';
 
+type Params = Promise<{ id: string }>;
 const Page: React.FC<{ params: Params }> = async ({ params }) => {
-  let id;
-  try {
-    id = await params.id;
-  } catch (error) {
-    console.log(error);
-  }
+  const id = (await params).id;
+
   return (
     <>
       <EditAddressComponent id={id} />
