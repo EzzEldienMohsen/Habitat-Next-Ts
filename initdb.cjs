@@ -72,6 +72,7 @@ db.prepare(
   )
 `
 ).run();
+
 // WISHLIST TABLE
 db.prepare(
   `
@@ -158,7 +159,6 @@ db.prepare(
 ).run();
 
 // MESSAGES TABLE
-
 db.prepare(
   `
 CREATE TABLE IF NOT EXISTS contact (
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS contact (
 // PRODUCTS INITIAL DATA
 const initData = async () => {
   const stmt = db.prepare(`
-    INSERT INTO products VALUES (
+    INSERT OR REPLACE INTO products VALUES (
       @id,
       @img,
       @name,
