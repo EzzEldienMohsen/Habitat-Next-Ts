@@ -1,8 +1,7 @@
+import React from 'react';
 import EditAddressComponent from '@/components/addressComponents/EditAddressComponent';
 import Separator from '@/components/mainPageComponents/Separator';
-import React from 'react';
 
-// Correct type definition for PageProps
 interface PageProps {
   params: {
     id: string;
@@ -11,6 +10,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ params }) => {
   const { id } = params;
+
   return (
     <>
       <EditAddressComponent id={id} />
@@ -20,3 +20,9 @@ const Page: React.FC<PageProps> = ({ params }) => {
 };
 
 export default Page;
+
+export async function generateStaticParams() {
+  // If you need dynamic `id` values:
+  // Replace this with your logic to fetch or define the `id` values
+  return [{ id: '1' }, { id: '2' }, { id: '3' }];
+}
