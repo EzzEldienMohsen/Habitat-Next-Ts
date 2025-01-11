@@ -30,8 +30,3 @@ const page: React.FC<{ params: { id: string } }> = async ({ params }) => {
 
 export default page;
 
-export async function generateStaticParams() {
-  // If you need dynamic `id` values:
-  // Replace this with your logic to fetch or define the `id` values
-  return [{ id: '1' }, { id: '2' }, { id: '3' }];
-}
