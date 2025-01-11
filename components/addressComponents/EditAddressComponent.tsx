@@ -16,7 +16,7 @@ const EditAddressComponent: React.FC<EditAddressComponentProps> = ({ id }) => {
   React.useEffect(() => {
     const getAddresses = async () => {
       try {
-        let addressId = Array.isArray(id) ? id[0] : id;
+        const addressId = Array.isArray(id) ? id[0] : id;
 
         if (addressId) {
           const data = await getAddressById(addressId);
@@ -24,7 +24,6 @@ const EditAddressComponent: React.FC<EditAddressComponentProps> = ({ id }) => {
             setAddress(data.address);
           }
         }
-
       } catch (error) {
         console.error('Error fetching address:', error);
         throw new Error('Could not get data from database');
