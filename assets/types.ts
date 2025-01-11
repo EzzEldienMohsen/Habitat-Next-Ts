@@ -122,7 +122,28 @@ export type GetCartData = {
   totalPrice: number;
   totalItems: number;
   taxes: number;
-  cartId:number;
+  cartId: number;
   subTotal: number;
   error?: { field: string; message: string }[];
 };
+
+//  Get The WishList Data
+export type GetWishlistData = {
+  items: WishlistItem[];
+  totalItems: number;
+  error?: { field: string; message: string }[];
+};
+// WishList Item
+export type WishlistItem = {
+  id: number;
+  img: string;
+  name: string;
+  type: string;
+  price: number;
+  cat: string;
+  wishlist_id: number;
+  product_id: number;
+};
+
+// wishList Type
+export type Wishlist = { id: number; client_id: number };

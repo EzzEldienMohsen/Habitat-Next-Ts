@@ -72,15 +72,30 @@ db.prepare(
   )
 `
 ).run();
-
 // WISHLIST TABLE
 db.prepare(
   `
-  CREATE TABLE IF NOT EXISTS wish_list (
+  CREATE TABLE IF NOT EXISTS wishlist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INTEGER NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES clientUser(id) ON DELETE CASCADE
+  )
+`
+).run();
+
+// WISHLIST ITEMS TABLE
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS wishlist_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    img TEXT NOT NULL,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    cat TEXT NOT NULL,
+    wishlist_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES clientUser(id) ON DELETE CASCADE,
+    FOREIGN KEY (wishlist_id) REFERENCES wishlist(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
   )
 `
