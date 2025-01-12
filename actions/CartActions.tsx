@@ -10,8 +10,10 @@ import {
 } from '@/assets/types';
 import { revalidatePath } from 'next/cache';
 
-const db = sql('habitat.db');
+import path from 'path';
 
+const dbPath = path.join(__dirname, 'habitat.db');
+const db = sql(dbPath);
 export const getAllCartItems = async (): Promise<GetCartData> => {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;

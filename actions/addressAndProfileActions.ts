@@ -9,8 +9,11 @@ import {
 } from '@/assets/zodValidationSchemas';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import path from 'path';
 
-const db = sql('habitat.db');
+const dbPath = path.join(__dirname, 'habitat.db');
+const db = sql(dbPath);
+
 // Create A new Address
 export const createAddress = async (
   prevState: {
