@@ -4,10 +4,8 @@ import { messageSchema } from '@/assets/zodValidationSchemas';
 import sql from 'better-sqlite3';
 import { revalidatePath } from 'next/cache';
 
-import path from 'path';
 
-const dbPath = path.join(__dirname, 'habitat.db');
-const db = sql(dbPath);
+const db = sql('habitat.db');
 
 export const getMainProducts = async (
   limit: number = 8,

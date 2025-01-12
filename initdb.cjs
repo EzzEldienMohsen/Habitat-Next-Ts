@@ -1,8 +1,6 @@
 const sql = require('better-sqlite3');
-const path = require('path');
 const { products } = require('./assets/products');
-const dbPath = path.join(__dirname, 'habitat.db');
-const db = sql(dbPath);
+const db = sql('habitat.db');
 // Initialize Foreign Keys
 db.pragma('foreign_keys = ON');
 
